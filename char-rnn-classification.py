@@ -33,7 +33,7 @@ def unicode_to_ascii(s):
 #print(unicode_to_ascii('Ślusàrski'))
 
 # Build the category_lines dictionary, a list of names per language
-category_lines = {}
+category_lines = {}#just the dictionary for the output
 all_categories = []
 
 # Read a file and split into lines
@@ -92,7 +92,7 @@ class RNN(nn.Module):  # 定义rnn模型
         combined = torch.cat((input, hidden), 1)  # 将隐藏层和输入层并入到一个矩阵中，同时使用W_h矩阵
         hidden = self.i2h(combined)
         output = self.i2o(combined)
-        output = self.softmax(output)
+        output = self.softmax(output)#dim=1:[tensor(0.12),tensor(0.23)...]
         return output, hidden
 
     def init_hidden(self):
@@ -173,12 +173,12 @@ def train(category_tensor, line_tensor):
     for i in range(line_tensor.size()[0]):
         output, hidden = rnn(line_tensor[i], hidden)
 
-    loss = criterion(output, category_tensor)
+    loss = criterion(output, category_tensor)#need to learning
     loss.backward()
 
     optimizer.step()
 
-    return output, loss.data
+    return output, loss.data#loss.data itself is the dim==1 tensor
 
 
 '''
@@ -229,3 +229,5 @@ plt.figure()
 plt.plot(all_losses)
 
 #了解如何查看中间的W_h和W_o
+#if there is anybody know how to print the result（like W_h and W_o） or save them in the cjeckpoint and use them next time
+#hoping you can tell me ☻
